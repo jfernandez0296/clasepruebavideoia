@@ -3,109 +3,110 @@
     #root {
       position: absolute;
       inset: 0;
-      font-family: "Inter", sans-serif;
-      color: #f4f1ea;
+      font-family: "Archivo Black", sans-serif;
+      color: #0b0f1e;
+      overflow: hidden;
     }
-    #pasos-row {
+    #pasos-slot {
       position: absolute;
       left: 0;
       right: 0;
-      top: 330px;
-      display: flex;
-      justify-content: center;
-      gap: 48px;
+      top: 300px;
+      height: 300px;
+      overflow: hidden;
     }
-    .pasos-card {
-      width: 460px;
-      padding: 44px 48px;
-      border-radius: 28px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.14);
-    }
-    .pasos-num {
-      font-size: 30px;
-      font-weight: 700;
-      color: var(--accent, #8b6cff);
-      margin-bottom: 18px;
-    }
-    .pasos-label {
-      font-size: 52px;
-      font-weight: 700;
-      letter-spacing: -0.02em;
-      line-height: 1.1;
-    }
-    #pasos-final {
+    .pasos-word {
       position: absolute;
       left: 0;
       right: 0;
       top: 0;
-      bottom: 0;
+      text-align: center;
+      font-size: 230px;
+      line-height: 300px;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+    }
+    #pasos-sub {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 650px;
+      display: flex;
+      justify-content: center;
+      gap: 56px;
+      font-family: "Inter", sans-serif;
+      font-weight: 700;
+      font-size: 54px;
+    }
+    .pasos-tag {
+      display: inline-block;
+    }
+    #pasos-flow {
+      position: absolute;
+      inset: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 96px;
-      font-weight: 900;
-      letter-spacing: -0.035em;
+      gap: 60px;
+      font-size: 200px;
+      letter-spacing: -0.03em;
     }
-    #pasos-final-hf {
-      color: var(--accent, #8b6cff);
-      margin-left: 0.25em;
+    #pasos-arrow {
+      width: 220px;
+      height: 26px;
+      background: #0b0f1e;
+      border-radius: 13px;
+      transform-origin: 0% 50%;
+      display: inline-block;
+    }
+    #pasos-html,
+    #pasos-mp4 {
+      display: inline-block;
+    }
+    #pasos-mp4 {
+      color: #f4f1ea;
     }
   </style>
   <div id="root" data-composition-id="pasos" data-width="1920" data-height="1080">
-    <div id="pasos-row" class="clip" data-start="0" data-duration="2.1">
-      <div class="pasos-card" id="pasos-c1">
-        <div class="pasos-num">01</div>
-        <div class="pasos-label">Escribe HTML</div>
-      </div>
-      <div class="pasos-card" id="pasos-c2">
-        <div class="pasos-num">02</div>
-        <div class="pasos-label">Anima con GSAP</div>
-      </div>
-      <div class="pasos-card" id="pasos-c3">
-        <div class="pasos-num">03</div>
-        <div class="pasos-label">Renderiza a MP4</div>
-      </div>
+    <div id="pasos-slot" class="clip" data-start="0" data-duration="1.75" data-layout-allow-overflow>
+      <div class="pasos-word" id="pasos-w1">Escribe</div>
+      <div class="pasos-word" id="pasos-w2">Anima</div>
+      <div class="pasos-word" id="pasos-w3">Renderiza</div>
     </div>
-    <div id="pasos-final" class="clip" data-start="1.9" data-duration="2.7">
-      <span id="pasos-final-a">Hecho con</span><span id="pasos-final-hf">HyperFrames</span>
+    <div id="pasos-sub" class="clip" data-start="0" data-duration="1.75">
+      <span class="pasos-tag" id="pasos-t1">HTML</span>
+      <span class="pasos-tag" id="pasos-t2">GSAP</span>
+      <span class="pasos-tag" id="pasos-t3">MP4</span>
+    </div>
+    <div id="pasos-flow" class="clip" data-start="1.7" data-duration="1.3">
+      <span id="pasos-html">HTML</span>
+      <span id="pasos-arrow"></span>
+      <span id="pasos-mp4">MP4</span>
     </div>
   </div>
   <script>
     const tl = gsap.timeline({ paused: true });
-    // Tarjetas: llegan grandes y desenfocadas, se asientan (escalonadas 0.12 s)
-    tl.fromTo(
-      ".pasos-card",
-      { opacity: 0, scale: 1.08, filter: "blur(12px)" },
-      { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.55, ease: "expo.out", stagger: 0.12 },
-      0.0,
-    );
-    // Resalta cada número en secuencia
-    tl.fromTo(
-      ".pasos-card",
-      { borderColor: "rgba(255,255,255,0.14)" },
-      { borderColor: "rgba(139,108,255,0.85)", duration: 0.25, ease: "power2.inOut", stagger: 0.3 },
-      0.9,
-    );
-    // Salida: las tarjetas se encogen hacia el centro con blur
-    tl.to(
-      ".pasos-card",
-      { opacity: 0, scale: 0.9, filter: "blur(10px)", duration: 0.25, ease: "power3.in", stagger: 0.04 },
-      1.75,
-    );
-    // Línea final: palabra por palabra de gris a tinta, luego se queda quieta
-    tl.fromTo(
-      "#pasos-final-a",
-      { opacity: 0, filter: "blur(6px)" },
-      { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" },
-      2.0,
-    );
-    tl.fromTo(
-      "#pasos-final-hf",
-      { opacity: 0, filter: "blur(6px)" },
-      { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" },
-      2.09,
-    );
+    // Tragamonedas: cada beat una palabra sube y reemplaza a la anterior
+    const words = ["#pasos-w1", "#pasos-w2", "#pasos-w3"];
+    const tags = ["#pasos-t1", "#pasos-t2", "#pasos-t3"];
+    words.forEach((w, i) => {
+      const t = i * 0.5;
+      tl.fromTo(w, { yPercent: i === 0 ? 0 : 100, opacity: i === 0 ? 0 : 1, filter: "blur(10px)" },
+        { yPercent: 0, opacity: 1, filter: "blur(0px)", duration: 0.22, ease: "expo.out" }, t);
+      if (i < words.length - 1)
+        tl.to(w, { yPercent: -100, filter: "blur(10px)", duration: 0.16, ease: "power3.in" }, t + 0.42);
+      // La etiqueta activa pasa de gris a tinta
+      tl.fromTo(tags[i], { opacity: 0.3 }, { opacity: 1, duration: 0.12, ease: "power2.out" }, t);
+      if (i < tags.length - 1) tl.to(tags[i], { opacity: 0.3, duration: 0.12 }, t + 0.5);
+    });
+    tl.to(["#pasos-w3", "#pasos-sub"], { opacity: 0, filter: "blur(10px)", duration: 0.18, ease: "power3.in" }, 1.55);
+    // HTML → MP4: la flecha se dibuja y MP4 golpea en el beat
+    tl.fromTo("#pasos-html", { opacity: 0, filter: "blur(8px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.18, ease: "power4.out" }, 1.7);
+    tl.fromTo("#pasos-arrow", { scaleX: 0 }, { scaleX: 1, duration: 0.3, ease: "power3.inOut" }, 1.75);
+    tl.fromTo("#pasos-mp4", { opacity: 0, scale: 1.8, filter: "blur(12px)" },
+      { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.28, ease: "expo.out" }, 2.05);
+    tl.to("#pasos-flow", { yPercent: 60, opacity: 0, filter: "blur(12px)", duration: 0.2, ease: "power3.in" }, 2.78);
     window.__timelines["pasos"] = tl;
   </script>
 </template>

@@ -2,7 +2,6 @@
 <html
   lang="es"
   data-composition-variables='[
-    {"id":"kicker","type":"string","label":"Antetítulo","default":"Clase de prueba"},
     {"id":"accent","type":"color","label":"Color de acento","default":"#8B6CFF"}
   ]'
 >
@@ -15,7 +14,6 @@
         --ground: #0b0f1e;
         --ink: #f4f1ea;
         --accent: #8b6cff;
-        --font-display: "Inter", sans-serif;
       }
       * {
         margin: 0;
@@ -33,12 +31,13 @@
       #root {
         width: 100%;
         height: 100%;
-        font-family: var(--font-display);
+        font-family: "Inter", sans-serif;
       }
       #bg {
         position: absolute;
         inset: 0;
         z-index: 1;
+        overflow: hidden;
       }
       #bg-fill {
         position: absolute;
@@ -54,10 +53,12 @@
         margin: -1200px 0 0 -1200px;
         background:
           radial-gradient(circle at 30% 35%, rgba(139, 108, 255, 0.35), transparent 38%),
-          radial-gradient(circle at 72% 68%, rgba(56, 189, 248, 0.22), transparent 36%);
+          radial-gradient(circle at 72% 68%, rgba(56, 189, 248, 0.2), transparent 36%);
       }
-      #intro,
-      #pasos {
+      #palabras,
+      #ia,
+      #pasos,
+      #final {
         z-index: 2;
       }
     </style>
@@ -67,7 +68,7 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="8.6"
+      data-duration="10"
       data-width="1920"
       data-height="1080"
     >
@@ -75,40 +76,45 @@
         <div id="bg-fill"></div>
         <div id="bg-glow"></div>
       </div>
-      <div
-        id="intro"
-        data-composition-id="intro"
-        data-composition-src="compositions/intro.html"
-        data-start="0"
-        data-duration="4"
-        data-track-index="1"
-        data-track-kind="graphics"
-        data-width="1920"
-        data-height="1080"
-      ></div>
-      <div
-        id="pasos"
-        data-composition-id="pasos"
-        data-composition-src="compositions/pasos.html"
-        data-start="4"
-        data-duration="4.6"
-        data-track-index="2"
-        data-track-kind="graphics"
-        data-width="1920"
-        data-height="1080"
-      ></div>
+
+      <div id="palabras" data-composition-id="palabras" data-composition-src="compositions/palabras.html"
+        data-start="0" data-duration="2" data-track-index="1" data-track-kind="graphics"
+        data-width="1920" data-height="1080"></div>
+      <div id="ia" data-composition-id="ia" data-composition-src="compositions/ia.html"
+        data-start="2" data-duration="2" data-track-index="2" data-track-kind="graphics"
+        data-width="1920" data-height="1080"></div>
+      <div id="pasos" data-composition-id="pasos" data-composition-src="compositions/pasos.html"
+        data-start="4" data-duration="3" data-track-index="3" data-track-kind="graphics"
+        data-width="1920" data-height="1080"></div>
+      <div id="final" data-composition-id="final" data-composition-src="compositions/final.html"
+        data-start="7" data-duration="3" data-track-index="4" data-track-kind="graphics"
+        data-width="1920" data-height="1080"></div>
+
+      <!-- Música: pista original generada con ElevenLabs, 120 BPM; media-start alinea el primer beat con 0 s -->
+      <audio id="music" class="clip" src="assets/bgm/track.mp3" data-start="0" data-duration="10"
+        data-media-start="0.035" data-volume="0.8" data-fade-out="0.8" data-track-index="10"></audio>
+
+      <!-- Efectos de sonido sobre cada acción visible (Pixabay, ver assets/sfx/CREDITS.md) -->
+      <audio id="sfx-pop-1" class="clip" src="assets/sfx/pop.mp3" data-start="0.5" data-volume="0.45" data-track-index="11"></audio>
+      <audio id="sfx-pop-2" class="clip" src="assets/sfx/pop.mp3" data-start="1" data-volume="0.45" data-track-index="12"></audio>
+      <audio id="sfx-whoosh-1" class="clip" src="assets/sfx/whoosh-short.mp3" data-start="1.75" data-volume="0.55" data-track-index="13"></audio>
+      <audio id="sfx-impact" class="clip" src="assets/sfx/impact-bass-1.mp3" data-start="3" data-volume="0.7" data-track-index="14"></audio>
+      <audio id="sfx-whoosh-2" class="clip" src="assets/sfx/whoosh-short.mp3" data-start="3.78" data-volume="0.55" data-track-index="15"></audio>
+      <audio id="sfx-pop-3" class="clip" src="assets/sfx/pop.mp3" data-start="4.5" data-volume="0.45" data-track-index="16"></audio>
+      <audio id="sfx-pop-4" class="clip" src="assets/sfx/pop.mp3" data-start="5" data-volume="0.45" data-track-index="17"></audio>
+      <audio id="sfx-whoosh-3" class="clip" src="assets/sfx/whoosh-short.mp3" data-start="5.75" data-volume="0.5" data-track-index="18"></audio>
+      <audio id="sfx-pop-5" class="clip" src="assets/sfx/pop.mp3" data-start="6.05" data-volume="0.5" data-track-index="19"></audio>
+      <audio id="sfx-sparkle" class="clip" src="assets/sfx/sparkle.mp3" data-start="7.5" data-volume="0.45" data-track-index="20"></audio>
     </div>
     <script>
       const tl = gsap.timeline({ paused: true });
-      // Fondo: órbita lenta y continua (~4° por segundo)
-      tl.fromTo("#bg-glow", { rotation: 0 }, { rotation: 34, duration: 8.6, ease: "none" }, 0);
-      // Colour flood en el corte entre escenas
-      tl.fromTo(
-        "#bg-fill",
-        { backgroundColor: "#0b0f1e" },
-        { backgroundColor: "#160f33", duration: 0.4, ease: "power2.inOut" },
-        3.8,
-      );
+      tl.fromTo("#bg-glow", { rotation: 0 }, { rotation: 40, duration: 10, ease: "none" }, 0);
+      // La escena "ia" termina en el color de acento: el fondo lo toma en el corte
+      tl.set("#bg-fill", { backgroundColor: "#8b6cff" }, 4);
+      tl.set("#bg-glow", { opacity: 0.35 }, 4);
+      // Colour flood de vuelta al fondo oscuro para el cierre
+      tl.to("#bg-fill", { backgroundColor: "#0b0f1e", duration: 0.4, ease: "power2.inOut" }, 6.85);
+      tl.to("#bg-glow", { opacity: 1, duration: 0.4, ease: "power2.inOut" }, 6.85);
       window.__timelines["main"] = tl;
     </script>
   </body>

@@ -1,0 +1,52 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      color: #f4f1ea;
+    }
+    #final-block {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+    #final-hecho {
+      font-family: "Inter", sans-serif;
+      font-weight: 700;
+      font-size: 64px;
+      color: rgba(244, 241, 234, 0.75);
+    }
+    #final-name {
+      font-family: "Archivo Black", sans-serif;
+      font-size: 180px;
+      letter-spacing: -0.02em;
+      line-height: 1;
+      color: #8b6cff;
+      display: flex;
+    }
+    #final-name .l {
+      display: inline-block;
+    }
+  </style>
+  <div id="root" data-composition-id="final" data-width="1920" data-height="1080">
+    <div id="final-block" class="clip" data-start="0" data-duration="3">
+      <div id="final-hecho">Hecho con</div>
+      <div id="final-name">
+        <span class="l">H</span><span class="l">Y</span><span class="l">P</span><span class="l">E</span><span class="l">R</span><span class="l">F</span><span class="l">R</span><span class="l">A</span><span class="l">M</span><span class="l">E</span><span class="l">S</span>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#final-hecho", { opacity: 0, filter: "blur(8px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" }, 0.1);
+    // Letra por letra: cae desde arriba y aterriza; luego quieto hasta el final
+    tl.fromTo("#final-name .l", { opacity: 0, yPercent: -60, filter: "blur(8px)" },
+      { opacity: 1, yPercent: 0, filter: "blur(0px)", duration: 0.3, ease: "expo.out", stagger: 0.035 }, 0.3);
+    window.__timelines["final"] = tl;
+  </script>
+</template>

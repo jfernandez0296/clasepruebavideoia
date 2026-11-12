@@ -1,0 +1,72 @@
+<template>
+  <style>
+    #root {
+      position: absolute;
+      inset: 0;
+      font-family: "Archivo Black", sans-serif;
+      color: #f4f1ea;
+      overflow: hidden;
+    }
+    #ia-flood {
+      position: absolute;
+      inset: 0;
+      background: #8b6cff;
+    }
+    #ia-line {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+    }
+    #ia-video {
+      font-size: 260px;
+      display: inline-block;
+    }
+    #ia-con {
+      font-family: "Inter", sans-serif;
+      font-weight: 700;
+      font-size: 90px;
+      text-transform: none;
+      letter-spacing: 0;
+      display: inline-block;
+    }
+    #ia-ia {
+      font-size: 260px;
+      display: inline-block;
+      color: #8b6cff;
+    }
+  </style>
+  <div id="root" data-composition-id="ia" data-width="1920" data-height="1080">
+    <div id="ia-flood" class="clip" data-start="0" data-duration="2" data-layout-ignore></div>
+    <div id="ia-line" class="clip" data-start="0" data-duration="2" data-layout-allow-overflow>
+      <span id="ia-video">Video</span>
+      <span id="ia-con">con</span>
+      <span id="ia-ia">IA</span>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    // Flood: un iris que se abre desde donde aterriza "IA" (beat 3.0 s global = 1.0 local)
+    tl.fromTo("#ia-flood", { clipPath: "circle(0% at 74% 50%)" },
+      { clipPath: "circle(150% at 74% 50%)", duration: 0.4, ease: "power2.inOut" }, 0.95);
+    // "VIDEO" llega desde abajo, continuando el látigo de la escena anterior
+    tl.fromTo("#ia-video", { opacity: 0, yPercent: 120, filter: "blur(14px)" },
+      { opacity: 1, yPercent: 0, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 0);
+    tl.fromTo("#ia-con", { opacity: 0, filter: "blur(8px)" },
+      { opacity: 1, filter: "blur(0px)", duration: 0.15, ease: "power4.out" }, 0.5);
+    // "IA" golpea en el beat, con el impacto
+    tl.fromTo("#ia-ia", { opacity: 0, scale: 2.4, filter: "blur(16px)" },
+      { opacity: 1, scale: 1, filter: "blur(0px)", duration: 0.3, ease: "expo.out" }, 1.0);
+    // Con el flood, el texto pasa a tinta oscura
+    tl.to(["#ia-video", "#ia-con"], { color: "#0b0f1e", duration: 0.2, ease: "power2.inOut" }, 1.05);
+    tl.to("#ia-ia", { color: "#0b0f1e", duration: 0.2, ease: "power2.inOut" }, 1.1);
+    // Zoom a través de "IA" hacia la siguiente escena
+    tl.to(["#ia-video", "#ia-con"], { opacity: 0, filter: "blur(10px)", duration: 0.18, ease: "power3.in" }, 1.72);
+    tl.to("#ia-ia", { scale: 9, opacity: 0, duration: 0.24, ease: "power3.in", transformOrigin: "50% 55%" }, 1.74);
+    window.__timelines["ia"] = tl;
+  </script>
+</template>
