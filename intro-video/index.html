@@ -1,0 +1,115 @@
+<!doctype html>
+<html
+  lang="es"
+  data-composition-variables='[
+    {"id":"kicker","type":"string","label":"Antetítulo","default":"Clase de prueba"},
+    {"id":"accent","type":"color","label":"Color de acento","default":"#8B6CFF"}
+  ]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --ground: #0b0f1e;
+        --ink: #f4f1ea;
+        --accent: #8b6cff;
+        --font-display: "Inter", sans-serif;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--ground);
+      }
+      #root {
+        width: 100%;
+        height: 100%;
+        font-family: var(--font-display);
+      }
+      #bg {
+        position: absolute;
+        inset: 0;
+        z-index: 1;
+      }
+      #bg-fill {
+        position: absolute;
+        inset: 0;
+        background: var(--ground);
+      }
+      #bg-glow {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 2400px;
+        height: 2400px;
+        margin: -1200px 0 0 -1200px;
+        background:
+          radial-gradient(circle at 30% 35%, rgba(139, 108, 255, 0.35), transparent 38%),
+          radial-gradient(circle at 72% 68%, rgba(56, 189, 248, 0.22), transparent 36%);
+      }
+      #intro,
+      #pasos {
+        z-index: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="8.6"
+      data-width="1920"
+      data-height="1080"
+    >
+      <div id="bg" data-layout-ignore>
+        <div id="bg-fill"></div>
+        <div id="bg-glow"></div>
+      </div>
+      <div
+        id="intro"
+        data-composition-id="intro"
+        data-composition-src="compositions/intro.html"
+        data-start="0"
+        data-duration="4"
+        data-track-index="1"
+        data-track-kind="graphics"
+        data-width="1920"
+        data-height="1080"
+      ></div>
+      <div
+        id="pasos"
+        data-composition-id="pasos"
+        data-composition-src="compositions/pasos.html"
+        data-start="4"
+        data-duration="4.6"
+        data-track-index="2"
+        data-track-kind="graphics"
+        data-width="1920"
+        data-height="1080"
+      ></div>
+    </div>
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      // Fondo: órbita lenta y continua (~4° por segundo)
+      tl.fromTo("#bg-glow", { rotation: 0 }, { rotation: 34, duration: 8.6, ease: "none" }, 0);
+      // Colour flood en el corte entre escenas
+      tl.fromTo(
+        "#bg-fill",
+        { backgroundColor: "#0b0f1e" },
+        { backgroundColor: "#160f33", duration: 0.4, ease: "power2.inOut" },
+        3.8,
+      );
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
